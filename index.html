@@ -1,116 +1,119 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" href="style.css">
-    <script src="//ap.lijit.com/www/sovrn_beacon_standalone/sovrn_standalone_beacon.js?iid=13508264" async="true" id="sBeacon"></script>
+    <script src="//ap.lijit.com/www/sovrn_beacon_standalone/sovrn_standalone_beacon.js?iid=13508264" async="true"
+        id="sBeacon"></script>
     <script>
         var adUnits = [
-               {
-                   code: 'test-div',
-                    mediaTypes: {
-                        banner: {
-                            sizes: [[300,250]]
+            {
+                code: 'test-div',
+                mediaTypes: {
+                    banner: {
+                        sizes: [[300, 250]]
+                    }
+                },
+                bids: [
+                    {
+                        bidder: 'appnexus',
+                        params: {
+                            placementId: 13144370
                         }
-                   },
-                   bids: [
-                       {
-                           bidder: 'appnexus',
-                           params: {
-                               placementId: 13144370
-                           }
-                       }
-                   ]
-               },
-               {
-                   code: 'test-div2',
-                    mediaTypes: {
-                        banner: {
-                            sizes: [[728,90]]
+                    }
+                ]
+            },
+            {
+                code: 'test-div2',
+                mediaTypes: {
+                    banner: {
+                        sizes: [[728, 90]]
+                    }
+                },
+                bids: [
+                    {
+                        bidder: 'appnexus',
+                        params: {
+                            placementId: 13144370
                         }
-                   },
-                   bids: [
-                       {
-                           bidder: 'appnexus',
-                           params: {
-                               placementId: 13144370
-                           }
-                       }
-                   ]
-               },
-               {
-                   code: 'test-div3',
-                    mediaTypes: {
-                        banner: {
-                            sizes: [[300,250]]
+                    }
+                ]
+            },
+            {
+                code: 'test-div3',
+                mediaTypes: {
+                    banner: {
+                        sizes: [[300, 250]]
+                    }
+                },
+                bids: [
+                    {
+                        bidder: 'sovrn',
+                        params: {
+                            tagid: 1034448
                         }
-                   },
-                   bids: [
-                       {
-                           bidder: 'sovrn',
-                           params: {
-                               placementId: 1034448
-                           }
-                       }
-                   ]
-               }
-           ];
-    
+                    }
+                ]
+            }
+        ];
+
         var pbjs = pbjs || {};
         pbjs.que = pbjs.que || [];
-      </script>
-      <script type="text/javascript" src="main.js" async></script>
-    
-      <script>
-        pbjs.que.push(function() {
+    </script>
+    <script type="text/javascript" src="main.js" async></script>
+
+    <script>
+        pbjs.que.push(function () {
             pbjs.addAdUnits(adUnits);
         });
-    
+
         // you could instead pass an array of adUnits
         // to getHighestCpmBids() if desired
         function renderAllAdUnits() {
-            var winners=pbjs.getHighestCpmBids();
-        for (var i = 0; i < winners.length; i++) {
-          renderOne(winners[i]);
+            var winners = pbjs.getHighestCpmBids();
+            for (var i = 0; i < winners.length; i++) {
+                renderOne(winners[i]);
             }
         }
-    
+
         function renderOne(winningBid) {
-        if (winningBid && winningBid.adId) {
-            var div = document.getElementById(winningBid.adUnitCode);
-            if (div) {
-              let iframe = document.createElement('iframe');
-              iframe.frameBorder = '0';
-              div.appendChild(iframe);
-              var iframeDoc = iframe.contentWindow.document;
-              pbjs.renderAd(iframeDoc, winningBid.adId);
+            if (winningBid && winningBid.adId) {
+                var div = document.getElementById(winningBid.adUnitCode);
+                if (div) {
+                    let iframe = document.createElement('iframe');
+                    iframe.frameBorder = '0';
+                    div.appendChild(iframe);
+                    var iframeDoc = iframe.contentWindow.document;
+                    pbjs.renderAd(iframeDoc, winningBid.adId);
+                }
             }
+
         }
-    
-        }
-    
-      </script>
-    
+
+    </script>
+
     <script>
-        pbjs.que.push(function() {
-              pbjs.requestBids({
-            timeout: 2000,
+        pbjs.que.push(function () {
+            pbjs.requestBids({
+                timeout: 2000,
                 bidsBackHandler: renderAllAdUnits
-              });
+            });
         });
     </script>
-        
+
 </head>
+
 <body>
-    
+
     <h1>Taboola Test Page</h1>
 
     <div id='test-div'></div>
-    <br/>
+    <br />
     <div id='test-div2'></div>
-    <br/>
+    <br />
     <div id='test-div3'></div>
 
 
 </body>
-</html>
 
+</html>
