@@ -59,6 +59,16 @@
 
         var pbjs = pbjs || {};
         pbjs.que = pbjs.que || [];
+        pbjs.setConfig({
+            userSync: {
+                filterSettings: {
+                    all: {
+                        bidders: ['sovrn'],
+                        filter: 'include'
+                    }
+                }
+            }
+        })
     </script>
     <script type="text/javascript" src="main.js" async></script>
 
