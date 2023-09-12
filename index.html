@@ -64,19 +64,10 @@
     <script type="text/javascript" src="main.js" async></script>
 
     <script>
-        pbjs.setConfig({
-            userSync: {
-                filterSettings: {
-                    all: {
-                        bidders: '*',
-                        filter: 'include'
-                    }
-                }
-            }
-        })
+        
         console.log("USER SYNC", pbjs.userSync);
 
-        
+
         pbjs.que.push(function () {
             pbjs.addAdUnits(adUnits);
         });
