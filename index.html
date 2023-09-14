@@ -59,13 +59,26 @@
 
         var pbjs = pbjs || {};
         pbjs.que = pbjs.que || [];
-        
+        pbjs.que.push(function () {
+            pbjs.setConfig({
+            userSync: {
+                filterSettings: {
+                    all: {
+                        bidders: 'sovrn',
+                        filter: 'include'
+                    }
+                },
+                syncDelay: 5000 // write image pixels 5 seconds after the auction
+            }
+        });
+        })
+
     </script>
     <script type="text/javascript" src="main.js" async></script>
 
     <script>
         
-        console.log("USER SYNC", pbjs.userSync);
+
 
 
         pbjs.que.push(function () {
