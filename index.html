@@ -61,25 +61,36 @@
         pbjs.que = pbjs.que || [];
         pbjs.que.push(function () {
             pbjs.setConfig({
-            userSync: {
-                filterSettings: {
-                    all: {
-                        bidders: '*',
-                        filter: 'include'
+                userSync: {
+                    filterSettings: {
+                        all: {
+                            bidders: '*',
+                            filter: 'include'
+                        }
+                    },
+                    syncDelay: 5000 // write image pixels 5 seconds after the auction
+                }
+
+            });
+            pbjs.setBidderConfig({
+                bidders: [
+                    'sovrn'
+                ],
+                config: {
+                    ortb2: {
+                        badv: ['bnkwines.hg'],
+                        bcat: ['IAB25-2', 'IAB25-3', 'IAB25-4', 'IAB25-5']
                     }
-                },
-                syncDelay: 5000 // write image pixels 5 seconds after the auction
-            },
-            
-            
-        });
+
+                }
+            })
         })
 
     </script>
     <script type="text/javascript" src="main.js" async></script>
 
     <script>
-        
+
 
 
 
