@@ -7,14 +7,16 @@ import {
   CheckCircle, 
   ArrowRight,
   Info,
-  Zap
+  Zap,
+  Cookie
 } from 'lucide-react';
 import { parseUrlQueryParams } from '../../lib/form-helpers.js';
 import { validateAndNormalizeUrl } from '../../lib/url-encoder.js';
 
-export default function UrlParser({ onParseUrl, onParseParams }) {
+export default function UrlParser({ onParseUrl, onParseParams, onParseCookieParam }) {
   const [inputUrl, setInputUrl] = useState('');
   const [parsedData, setParsedData] = useState(null);
+  const [selectedCookieParamIndex, setSelectedCookieParamIndex] = useState(null);
   const [isParsing, setIsParsing] = useState(false);
   const [error, setError] = useState('');
 
@@ -22,6 +24,7 @@ export default function UrlParser({ onParseUrl, onParseParams }) {
     const url = e.target.value;
     setInputUrl(url);
     setParsedData(null);
+    setSelectedCookieParamIndex(null);
     setError('');
   };
 
@@ -57,6 +60,7 @@ export default function UrlParser({ onParseUrl, onParseParams }) {
       };
 
       setParsedData(result);
+      setSelectedCookieParamIndex(null); // Reset cookie param selection
     } catch (error) {
       setError('Failed to parse URL. Please check the format.');
     } finally {
@@ -70,9 +74,23 @@ export default function UrlParser({ onParseUrl, onParseParams }) {
     }
   };
 
-  const handleApplyParams = () => {
-    if (parsedData?.params) {
-      onParseParams(parsedData.params);
+  const handleCookieParamChange = (index) => {
+    setSelectedCookieParamIndex(index);
+    
+    // Update the parameter value to $UID if it's not already
+    if (index !== null && parsedData?.params[index]) {
+      const updatedParams = [...parsedData.params];
+      if (updatedParams[index].value !== '$UID') {
+        updatedParams[index] = {
+          ...updatedParams[index],
+          value: '$UID',
+          isMacro: true
+        };
+        setParsedData(prev => ({
+          ...prev,
+          params: updatedParams
+        }));
+      }
     }
   };
 
@@ -81,6 +99,9 @@ export default function UrlParser({ onParseUrl, onParseParams }) {
     if (parsedData) {
       onParseUrl(parsedData.baseUrl);
       onParseParams(parsedData.params);
+      if (onParseCookieParam && selectedCookieParamIndex !== null) {
+        onParseCookieParam(selectedCookieParamIndex);
+      }
     }
   };
 
@@ -186,56 +207,86 @@ export default function UrlParser({ onParseUrl, onParseParams }) {
               </div>
             </div>
 
-            {/* Query Parameters */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-green-800">
-                  Query Parameters ({parsedData.params.length}):
-                </label>
-                <button
-                  type="button"
-                  onClick={handleApplyParams}
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  Apply to Query Parameters Form
-                </button>
-              </div>
-              
-              {parsedData.params.length > 0 ? (
+            {/* Cookie Parameter Selection */}
+            {parsedData.params.length > 0 && (
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <Cookie className="h-4 w-4 text-blue-500" />
+                  <h4 className="text-sm font-medium text-green-800">Cookie Parameter Selection</h4>
+                </div>
+                <p className="text-sm text-green-700">
+                  Select which query parameter should be used to pass the Sovrn third-party cookie value:
+                </p>
                 <div className="bg-white border border-green-200 rounded p-3 space-y-2">
                   {parsedData.params.map((param, index) => (
-                    <div key={index} className="flex items-center justify-between text-sm">
-                      <div className="flex items-center space-x-2">
-                        <span className="font-medium text-green-900">{param.name}</span>
-                        <ArrowRight className="h-3 w-3 text-green-600" />
-                        <span className={`font-mono ${param.isMacro ? 'text-blue-600' : 'text-green-900'}`}>
-                          {param.value}
+                    <label key={index} className="flex items-center space-x-3 cursor-pointer p-2 hover:bg-gray-50 rounded">
+                      <input
+                        type="radio"
+                        name="cookieParam"
+                        value={index}
+                        checked={selectedCookieParamIndex === index}
+                        onChange={(e) => handleCookieParamChange(parseInt(e.target.value))}
+                        className="text-blue-600 focus:ring-blue-500"
+                      />
+                      <div className="flex items-center space-x-2 flex-1">
+                        <span className="text-sm font-medium text-gray-900">{param.name}</span>
+                        <ArrowRight className="h-3 w-3 text-gray-600" />
+                        <span className={`text-sm font-mono ${
+                          selectedCookieParamIndex === index && param.value === '$UID'
+                            ? 'text-blue-600 font-semibold' 
+                            : param.isMacro 
+                              ? 'text-blue-600' 
+                              : 'text-gray-900'
+                        }`}>
+                          {selectedCookieParamIndex === index && param.value !== '$UID' ? '$UID' : param.value}
                         </span>
-                        {param.isMacro && (
+                        {(param.isMacro || selectedCookieParamIndex === index) && (
                           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
                             Macro
                           </span>
                         )}
+                        {selectedCookieParamIndex === index && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                            <Cookie className="h-3 w-3 mr-1" />
+                            Cookie Param
+                          </span>
+                        )}
                       </div>
-                    </div>
+                    </label>
                   ))}
                 </div>
-              ) : (
+                {selectedCookieParamIndex === null && (
+                  <p className="text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded p-2">
+                    Please select a parameter to use for the cookie value before applying to form.
+                  </p>
+                )}
+              </div>
+            )}
+
+            {parsedData.params.length === 0 && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-green-800">Query Parameters:</label>
                 <div className="bg-white border border-green-200 rounded px-3 py-2 text-sm text-gray-500">
                   No query parameters found
                 </div>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Apply All Button */}
             <div className="pt-2 border-t border-green-200">
               <button
                 type="button"
                 onClick={handleApplyAll}
-                className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                disabled={parsedData.params.length > 0 && selectedCookieParamIndex === null}
+                className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <CheckCircle className="h-4 w-4 mr-2" />
                 Apply All to Form
+                {parsedData.params.length > 0 && selectedCookieParamIndex !== null && (
+                  <span className="ml-2 text-xs bg-green-500 px-2 py-0.5 rounded">
+                    + Cookie Selection
+                  </span>
+                )}
               </button>
             </div>
           </div>
@@ -252,6 +303,7 @@ export default function UrlParser({ onParseUrl, onParseParams }) {
                   <li>• Automatically detects and validates URL format</li>
                   <li>• Extracts base URL and separates query parameters</li>
                   <li>• Identifies server-side macros (${"{MACRO}"}, %%MACRO%%, {"{MACRO}"})</li>
+                  <li>• Select cookie parameter and apply everything at once</li>
                   <li>• Preserves parameter order and values exactly as provided</li>
                 </ul>
               </div>
