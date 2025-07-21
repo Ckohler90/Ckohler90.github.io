@@ -219,7 +219,7 @@ export default function QueryParamBuilder({
                     <input
                       type="text"
                       placeholder="${MACRO} or static value"
-                      value={isCookieParam ? "$UID" : param.value}
+                      value={param.value}
                       onChange={(e) => handleParamChange(index, 'value', e.target.value)}
                       className={`w-full px-3 py-2 pr-8 text-sm border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                         !validation.value.isValid && param.value
