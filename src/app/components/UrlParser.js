@@ -60,6 +60,11 @@ export default function UrlParser({ onParseUrl, onParseParams, onParseCookiePara
       };
 
       setParsedData(result);
+      if(result.params.length === 0){
+        setError('No query parameters found. Add at least one query parameter to hold the Sovrn cookie.');
+        setIsParsing(false);
+        return;
+      }
       setSelectedCookieParamIndex(null); // Reset cookie param selection
     } catch (error) {
       setError('Failed to parse URL. Please check the format.');
