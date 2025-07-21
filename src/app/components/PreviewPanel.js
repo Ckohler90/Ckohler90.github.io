@@ -137,7 +137,7 @@ export default function PreviewPanel({ url, error, isBuilding }) {
             <div className="p-4 bg-white space-y-3">
               <div className="flex flex-wrap gap-2">
                 <CopyButton 
-                  text={url}
+                  text={encodeCompleteUrlWithParams(url).url}
                   variant="primary"
                   label="Copy Final URL"
                 />
