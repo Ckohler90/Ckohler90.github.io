@@ -180,13 +180,6 @@ export default function UrlParser({ onParseUrl, onParseParams }) {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium text-green-800">Base URL:</label>
-                <button
-                  type="button"
-                  onClick={handleApplyBaseUrl}
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  Apply to Step 1
-                </button>
               </div>
               <div className="bg-white border border-green-200 rounded px-3 py-2 text-sm font-mono text-green-900 break-all">
                 {parsedData.baseUrl}
@@ -204,7 +197,7 @@ export default function UrlParser({ onParseUrl, onParseParams }) {
                   onClick={handleApplyParams}
                   className="text-sm text-blue-600 hover:text-blue-700 font-medium"
                 >
-                  Apply to Step 2
+                  Apply to Query Parameters Form
                 </button>
               </div>
               

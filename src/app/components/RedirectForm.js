@@ -63,10 +63,9 @@ export default function RedirectForm() {
       
       try {
         const redirectUrl = watchedValues.redirectUrl || '';
-        
         // Check if the URL contains query parameters (indicates a complete URL)
         const hasQueryParams = redirectUrl.includes('?') && redirectUrl.includes('=');
-        
+
         if (hasQueryParams) {
           // Handle complete URL with query parameters
           const result = encodeCompleteUrlWithParams(redirectUrl, true);
@@ -87,7 +86,7 @@ export default function RedirectForm() {
           };
 
           const result = buildFinalUrl(formData);
-          
+          console.log('result line 89', result);
           if (result.isValid) {
             setBuiltUrl(result.url);
             setUrlError('');
@@ -144,6 +143,17 @@ export default function RedirectForm() {
 
   const handleCookieParamChange = (index) => {
     setCookieParamIndex(index);
+    
+    // Check if the selected parameter's value is already $UID, and if not, set it to $UID
+    if (index !== null && queryParams[index]) {
+      const currentParam = queryParams[index];
+      if (currentParam.value !== '$UID') {
+        handleUpdateQueryParam(index, {
+          value: '$UID',
+          isMacro: true
+        });
+      }
+    }
   };
 
   const handleParseUrl = (baseUrl) => {
@@ -206,7 +216,7 @@ export default function RedirectForm() {
           />
         </div>
 
-        {/* Step 1: Base Redirect URL */}
+        {/* Step 1: Base Redirect URL
         <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">
@@ -220,7 +230,7 @@ export default function RedirectForm() {
             error={errors.redirectUrl}
             placeholder="https://example.com/sync"
           />
-        </div>
+        </div> */}
 
         {/* Step 2: Query Parameters & Cookie Selection */}
         <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
@@ -251,7 +261,7 @@ export default function RedirectForm() {
             </div>
             <h2 className="text-xl font-semibold text-gray-900">Preview & Validation</h2>
           </div>
-          
+          {console.log('builtUrl', builtUrl)}
           <PreviewPanel
             url={builtUrl}
             error={urlError}

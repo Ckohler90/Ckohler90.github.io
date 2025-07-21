@@ -31,9 +31,12 @@ export default function QueryParamBuilder({
     // Auto-detect if value is a macro
     if (field === 'value') {
       const macroPattern = /^(\$\{[^}]+\}|%%[^%]+%%|\{[^}]+\})$/;
-      updates.isMacro = macroPattern.test(value);
+      updates.isMacro = value === '$UID' ? true : macroPattern.test(value);
+      console.log("updates.isMacro", updates.isMacro);
+         
     }
     
+
     onUpdate(index, updates);
   };
 
@@ -148,7 +151,7 @@ export default function QueryParamBuilder({
                   {param.name && (
                     <>
                       <span className="text-blue-600">→</span>
-                      <span className="text-sm text-blue-800 font-mono">{cookieParamIndex ? 'UID' : param.value}</span>
+                      <span className="text-sm text-blue-800 font-mono">{cookieParamIndex ? '$UID' : param.value}</span>
                     </>
                   )}
                 </div>
@@ -216,7 +219,7 @@ export default function QueryParamBuilder({
                     <input
                       type="text"
                       placeholder="${MACRO} or static value"
-                      value={isCookieParam ? "$UID" : param.value}
+                      value={param.value}
                       onChange={(e) => handleParamChange(index, 'value', e.target.value)}
                       className={`w-full px-3 py-2 pr-8 text-sm border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                         !validation.value.isValid && param.value
@@ -306,7 +309,7 @@ export default function QueryParamBuilder({
           <li>• Use server-side macros like ${"{GDPR_APPLIES}"}, %%MACRO%%, or {"{MACRO}"}</li>
           <li>• Static values will be URL-encoded automatically</li>
           <li>• Macros are preserved during encoding for server-side replacement</li>
-          <li>• Select one parameter to be used for passing your third-party cookie value</li>
+          <li>• Select one parameter to be used for passing the Sovrn cookie</li>
         </ul>
       </div>
     </div>

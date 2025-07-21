@@ -13,7 +13,6 @@ export default function CopyButton({
 
   const handleCopy = async () => {
     if (!text) return;
-
     try {
       await navigator.clipboard.writeText(text);
       setCopyState('success');

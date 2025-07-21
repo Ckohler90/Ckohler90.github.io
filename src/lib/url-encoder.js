@@ -36,7 +36,9 @@ export function encodeUrlWithMacros(url, options = {}) {
 
   // Protect macros before encoding
   const { processedStr, macroMap } = protectMacros(url);
-  
+  console.log("processedStr url-encoder.js line 39", processedStr);
+  console.log("macroMap url-encoder.js line 40", macroMap);
+
   // Encode the processed string
   const encodedStr = encodeStringWithChars(processedStr, encodeSpaces);
   
@@ -87,6 +89,7 @@ export function buildQueryString(params, options = {}) {
   const queryPairs = params
     .filter(param => param.name && param.value !== undefined)
     .map(param => {
+      console.log("param url-encoder.js line 91", param);// $UID is preserved up to this point
       const encodedName = encodeUrlWithMacros(param.name, { 
         ...options, 
         preserveMacros: false 
@@ -95,7 +98,7 @@ export function buildQueryString(params, options = {}) {
       const encodedValue = param.isMacro 
         ? param.value // Don't encode macros at all
         : encodeUrlWithMacros(param.value, { ...options, preserveMacros: false });
-      
+      console.log("encodedValue url-encoder.js line 99", encodedValue);
       return `${encodedName}=${encodedValue}`;
     });
   
