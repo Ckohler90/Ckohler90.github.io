@@ -152,6 +152,10 @@ export default function RedirectForm() {
           value: '$UID',
           isMacro: true
         });
+      } else if (currentParam.value === '$UID') {
+        handleUpdateQueryParam(index, {
+          isMacro: true
+        });
       }
     }
   };
