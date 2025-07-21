@@ -67,7 +67,8 @@ export function validateQueryParamValue(value, isMacro = false) {
   // If it's a macro, validate macro format
   if (isMacro) {
     const macroPattern = /^(\$\{[^}]+\}|%%[^%]+%%|\{[^}]+\})$/;
-    if (!macroPattern.test(value)) {
+    const sovrnMacro = '$UID';
+    if (!macroPattern.test(value) && value !== sovrnMacro) {
       return {
         isValid: false,
         error: 'Invalid macro format. Use ${MACRO}, %%MACRO%%, or {MACRO}'
