@@ -175,6 +175,10 @@ export default function RedirectForm() {
     setCookieParamIndex(null);
   };
 
+  const handleParseCookieParam = (index) => {
+    setCookieParamIndex(index);
+  };
+
   const onSubmit = (data) => {
     const formData = {
       ...data,
@@ -210,31 +214,16 @@ export default function RedirectForm() {
             <div className="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">
               ⚡
             </div>
-            <h2 className="text-xl font-semibold text-gray-900">Quick Start - Parse Existing URL</h2>
+            <h2 className="text-xl font-semibold text-gray-900">Quick Start - Parse URL & Select Cookie Parameter</h2>
             <span className="text-sm text-gray-500 font-normal">(Optional)</span>
           </div>
           
           <UrlParser
             onParseUrl={handleParseUrl}
             onParseParams={handleParseParams}
+            onParseCookieParam={handleCookieParamChange}
           />
         </div>
-
-        {/* Step 1: Base Redirect URL
-        <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">
-              1
-            </div>
-            <h2 className="text-xl font-semibold text-gray-900">Base Redirect URL</h2>
-          </div>
-          
-          <UrlInput
-            register={register}
-            error={errors.redirectUrl}
-            placeholder="https://example.com/sync"
-          />
-        </div> */}
 
         {/* Step 2: Query Parameters & Cookie Selection */}
         <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
@@ -242,7 +231,7 @@ export default function RedirectForm() {
             <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">
               2
             </div>
-            <h2 className="text-xl font-semibold text-gray-900">Query Parameters & Cookie Selection</h2>
+            <h2 className="text-xl font-semibold text-gray-900">Additional Query Parameters</h2>
           </div>
           
           <QueryParamBuilder
@@ -252,8 +241,6 @@ export default function RedirectForm() {
             onUpdate={handleUpdateQueryParam}
             onAddPreset={handleAddPreset}
             presets={getQueryParamPresets()}
-            cookieParamIndex={cookieParamIndex}
-            onCookieParamChange={handleCookieParamChange}
           />
         </div>
 

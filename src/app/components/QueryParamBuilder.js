@@ -8,8 +8,7 @@ import {
   Code, 
   AlertCircle, 
   ChevronDown,
-  Zap,
-  Cookie
+  Zap
 } from 'lucide-react';
 import { validateQueryParamName, validateQueryParamValue } from '../../lib/form-helpers.js';
 
@@ -19,9 +18,7 @@ export default function QueryParamBuilder({
   onRemove, 
   onUpdate, 
   onAddPreset, 
-  presets = [],
-  cookieParamIndex,
-  onCookieParamChange
+  presets = []
 }) {
   const [showPresets, setShowPresets] = useState(false);
 
@@ -125,65 +122,15 @@ export default function QueryParamBuilder({
         </div>
       </div>
 
-      {/* Cookie Parameter Selection */}
-      {queryParams.length > 0 && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-center space-x-2 mb-3">
-            <Cookie className="h-4 w-4 text-blue-500" />
-            <h4 className="text-sm font-medium text-blue-900">Cookie Parameter Selection</h4>
-          </div>
-          <p className="text-sm text-blue-800 mb-3">
-            Select which query parameter should be used to pass the Sovrn third-party cookie value:
-          </p>
-          <div className="space-y-2">
-            {queryParams.map((param, index) => (
-              <label key={index} className="flex items-center space-x-3 cursor-pointer">
-                <input
-                  type="radio"
-                  name="cookieParam"
-                  value={index}
-                  checked={cookieParamIndex === index}
-                  onChange={(e) => onCookieParamChange(parseInt(e.target.value))}
-                  className="text-blue-600 focus:ring-blue-500"
-                />
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm font-medium text-blue-900">{param.name}</span>
-                  {param.name && (
-                    <>
-                      <span className="text-blue-600">→</span>
-                      <span className="text-sm text-blue-800 font-mono">{cookieParamIndex ? '$UID' : param.value}</span>
-                    </>
-                  )}
-                </div>
-              </label>
-            ))}
-          </div>
-          {cookieParamIndex === null && (
-            <p className="text-sm text-blue-600 mt-2">
-              Please select a parameter to use for the cookie value.
-            </p>
-          )}
-        </div>
-      )}
+
 
       {/* Parameter List */}
       <div className="space-y-3">
         {queryParams.map((param, index) => {
           const validation = validateParam(param);
-          const isCookieParam = cookieParamIndex === index;
           
           return (
-            <div key={index} className={`border rounded-lg p-4 ${
-              isCookieParam 
-                ? 'border-blue-300 bg-blue-50' 
-                : 'border-gray-200 bg-gray-50'
-            }`}>
-              {isCookieParam && (
-                <div className="flex items-center space-x-2 mb-3 p-2 bg-blue-100 border border-blue-200 rounded text-xs">
-                  <Cookie className="h-3 w-3 text-blue-500" />
-                  <span className="font-medium text-blue-900">Selected as Cookie Parameter</span>
-                </div>
-              )}
+            <div key={index} className="border rounded-lg p-4 border-gray-200 bg-gray-50">
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {/* Parameter Name */}
@@ -309,7 +256,6 @@ export default function QueryParamBuilder({
           <li>• Use server-side macros like ${"{GDPR_APPLIES}"}, %%MACRO%%, or {"{MACRO}"}</li>
           <li>• Static values will be URL-encoded automatically</li>
           <li>• Macros are preserved during encoding for server-side replacement</li>
-          <li>• Select one parameter to be used for passing the Sovrn cookie</li>
         </ul>
       </div>
     </div>
