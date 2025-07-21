@@ -13,10 +13,6 @@ export const MACRO_PATTERNS = [
   {
     pattern: /\{[^}]+\}/g, // {MACRO_NAME}
     type: 'curly'
-  },
-  {
-    pattern: /\$UID/g,
-    type: 'sovrnMacro'
   }
 ];
 
