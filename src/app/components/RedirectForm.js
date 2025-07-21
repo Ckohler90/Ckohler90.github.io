@@ -143,6 +143,17 @@ export default function RedirectForm() {
 
   const handleCookieParamChange = (index) => {
     setCookieParamIndex(index);
+    
+    // Check if the selected parameter's value is already $UID, and if not, set it to $UID
+    if (index !== null && queryParams[index]) {
+      const currentParam = queryParams[index];
+      if (currentParam.value !== '$UID') {
+        handleUpdateQueryParam(index, {
+          value: '$UID',
+          isMacro: true
+        });
+      }
+    }
   };
 
   const handleParseUrl = (baseUrl) => {
