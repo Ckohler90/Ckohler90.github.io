@@ -87,7 +87,6 @@ export default function RedirectForm() {
           };
 
           const result = buildFinalUrl(formData);
-          console.log('result line 89', result);
           if (result.isValid) {
             setBuiltUrl(result.url);
             setUrlError('');
@@ -230,7 +229,6 @@ export default function RedirectForm() {
             </div>
             <h2 className="text-xl font-semibold text-gray-900">Preview & Validation</h2>
           </div>
-          {console.log('builtUrl', builtUrl)}
           <PreviewPanel
             url={builtUrl}
             error={urlError}
@@ -273,7 +271,7 @@ export default function RedirectForm() {
                 onRemove={handleRemoveQueryParam}
                 onUpdate={handleUpdateQueryParam}
                 onAddPreset={handleAddPreset}
-                presets={getQueryParamPresets()}
+                presets={getQueryParamPresets}
               />
             </div>
           )}

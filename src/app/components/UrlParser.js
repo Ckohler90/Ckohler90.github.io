@@ -100,7 +100,6 @@ export default function UrlParser({ onParseUrl, onParseParams, onParseCookiePara
   };
 
   const handleApplyAll = () => {
-    console.log('Parsed Data', parsedData);
     if (parsedData) {
       onParseUrl(parsedData.baseUrl);
       onParseParams(parsedData.params);

@@ -8,7 +8,8 @@ import {
   Code, 
   AlertCircle, 
   ChevronDown,
-  Zap
+  Zap,
+  Cookie
 } from 'lucide-react';
 import { validateQueryParamName, validateQueryParamValue } from '../../lib/form-helpers.js';
 
@@ -18,7 +19,9 @@ export default function QueryParamBuilder({
   onRemove, 
   onUpdate, 
   onAddPreset, 
-  presets = []
+  presets = [],
+  cookieParamIndex,
+  onCookieParamChange
 }) {
   const [showPresets, setShowPresets] = useState(false);
 
@@ -55,6 +58,7 @@ export default function QueryParamBuilder({
           <Settings className="h-5 w-5 text-gray-500" />
           <span className="text-sm font-medium text-gray-700">
             Query Parameters ({queryParams.length})
+            {console.log("queryParams", queryParams)}
           </span>
         </div>
         
@@ -128,9 +132,20 @@ export default function QueryParamBuilder({
       <div className="space-y-3">
         {queryParams.map((param, index) => {
           const validation = validateParam(param);
+          const isCookieParam = cookieParamIndex === index;
           
           return (
-            <div key={index} className="border rounded-lg p-4 border-gray-200 bg-gray-50">
+            <div key={index} className={`border rounded-lg p-4 ${
+              isCookieParam 
+                ? 'border-blue-300 bg-blue-50' 
+                : 'border-gray-200 bg-gray-50'
+            }`}>
+              {isCookieParam && (
+                <div className="flex items-center space-x-2 mb-3 p-2 bg-blue-100 border border-blue-200 rounded text-xs">
+                  <Cookie className="h-3 w-3 text-blue-500" />
+                  <span className="font-medium text-blue-900">Selected as Cookie Parameter</span>
+                </div>
+              )}
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {/* Parameter Name */}
