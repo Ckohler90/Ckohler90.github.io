@@ -180,7 +180,6 @@ export function buildFinalUrl(formData) {
     
     // Build the complete URL
     const finalUrl = buildCompleteUrl(formData.redirectUrl, filteredParams);
-    console.log("Final URL ", finalUrl);
     return {
       url: finalUrl,
       isValid: true
