@@ -96,8 +96,6 @@ export default function PreviewPanel({ url, error, isBuilding }) {
                 <div className="flex-1 min-w-0">
                   <div className="font-mono text-sm break-all text-gray-900 leading-relaxed">
                     {showRaw ? encodeCompleteUrlWithParams(url).url : decodedUrl}
-                    {console.log("URL ", url)}
-                    {console.log("Decoded URL ", decodedUrl)}
                   </div>
                 </div>
               </div>

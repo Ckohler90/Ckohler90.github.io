@@ -29,7 +29,6 @@ export default function QueryParamBuilder({
     if (field === 'value') {
       const macroPattern = /^(\$\{[^}]+\}|%%[^%]+%%|\{[^}]+\})$/;
       updates.isMacro = value === '$UID' ? true : macroPattern.test(value);
-      console.log("updates.isMacro", updates.isMacro);
          
     }
     

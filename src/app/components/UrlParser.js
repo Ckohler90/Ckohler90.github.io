@@ -91,16 +91,20 @@ export default function UrlParser({ onParseUrl, onParseParams, onParseCookiePara
           value: '$UID',
           isMacro: true
         };
-        setParsedData(prev => ({
-          ...prev,
-          params: updatedParams
-        }));
+      } else {
+        updatedParams[index] = {
+          ...updatedParams[index],
+          isMacro: true
+        };
       }
+      setParsedData(prev => ({
+        ...prev,
+        params: updatedParams
+      }));
     }
   };
 
   const handleApplyAll = () => {
-    console.log('Parsed Data', parsedData);
     if (parsedData) {
       onParseUrl(parsedData.baseUrl);
       onParseParams(parsedData.params);
