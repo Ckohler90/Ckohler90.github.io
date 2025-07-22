@@ -36,12 +36,11 @@ export function encodeUrlWithMacros(url, options = {}) {
 
   // Protect macros before encoding
   const { processedStr, macroMap } = protectMacros(url);
-  console.log("processedStr url-encoder.js line 39", processedStr);
-  console.log("macroMap url-encoder.js line 40", macroMap);
+  
 
   // Encode the processed string
   const encodedStr = encodeStringWithChars(processedStr, encodeSpaces);
-  
+  console.log("encodedStr url-encoder.js line 43", encodedStr);
   // Restore macros
   return restoreMacros(encodedStr, macroMap);
 }

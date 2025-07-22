@@ -36,6 +36,7 @@ export default function RedirectForm() {
   const [builtUrl, setBuiltUrl] = useState('');
   const [urlError, setUrlError] = useState('');
   const [isBuilding, setIsBuilding] = useState(false);
+  const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
 
   const {
     register,
@@ -175,9 +176,6 @@ export default function RedirectForm() {
     setCookieParamIndex(null);
   };
 
-  const handleParseCookieParam = (index) => {
-    setCookieParamIndex(index);
-  };
 
   const onSubmit = (data) => {
     const formData = {
@@ -215,32 +213,12 @@ export default function RedirectForm() {
               ⚡
             </div>
             <h2 className="text-xl font-semibold text-gray-900">Quick Start - Parse URL & Select Cookie Parameter</h2>
-            <span className="text-sm text-gray-500 font-normal">(Optional)</span>
           </div>
           
           <UrlParser
             onParseUrl={handleParseUrl}
             onParseParams={handleParseParams}
             onParseCookieParam={handleCookieParamChange}
-          />
-        </div>
-
-        {/* Step 2: Query Parameters & Cookie Selection */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">
-              2
-            </div>
-            <h2 className="text-xl font-semibold text-gray-900">Additional Query Parameters</h2>
-          </div>
-          
-          <QueryParamBuilder
-            queryParams={queryParams}
-            onAdd={handleAddQueryParam}
-            onRemove={handleRemoveQueryParam}
-            onUpdate={handleUpdateQueryParam}
-            onAddPreset={handleAddPreset}
-            presets={getQueryParamPresets()}
           />
         </div>
 
@@ -259,6 +237,49 @@ export default function RedirectForm() {
             isBuilding={isBuilding}
           />
         </div>
+
+        {/* Step 2: Advanced Settings (Query Parameters & Cookie Selection) */}
+        <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                2
+              </div>
+              <h2 className="text-xl font-semibold text-gray-900">Advanced Settings</h2>
+              <span className="text-sm text-gray-500 font-normal">(Optional)</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
+              className="flex items-center space-x-2 text-sm text-blue-600 hover:text-blue-800 transition-colors"
+            >
+              <span>{showAdvancedSettings ? 'Hide' : 'Show'} Additional Parameters</span>
+              <svg 
+                className={`w-4 h-4 transition-transform ${showAdvancedSettings ? 'rotate-180' : ''}`}
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+          
+          {showAdvancedSettings && (
+            <div className="pt-4 border-t border-gray-100">
+              <QueryParamBuilder
+                queryParams={queryParams}
+                onAdd={handleAddQueryParam}
+                onRemove={handleRemoveQueryParam}
+                onUpdate={handleUpdateQueryParam}
+                onAddPreset={handleAddPreset}
+                presets={getQueryParamPresets()}
+              />
+            </div>
+          )}
+        </div>
+
+        
       </form>
     </div>
   );

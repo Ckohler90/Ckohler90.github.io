@@ -189,9 +189,8 @@ export default function PreviewPanel({ url, error, isBuilding }) {
         <div className="bg-green-50 border border-green-200 rounded-lg p-3">
           <h4 className="text-sm font-medium text-green-900 mb-1">Ready to Use</h4>
           <div className="text-xs text-green-800 space-y-1">
-            <p>• Complete URLs are fully encoded while preserving server-side macros</p>
+            <p>• Complete URLs are fully encoded while preserving our partner's server-side macros</p>
             <p>• Base URLs with separate parameters only encode reserved characters: ! * ' ( ) ; : @ & = + $ , / ? % # [ ]</p>
-            <p>• Server-side macros are completely ignored and left unencoded</p>
             <p>• Copy the "Final URL" and use it in your user-sync pixel configuration</p>
           </div>
         </div>
