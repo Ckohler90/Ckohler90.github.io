@@ -101,35 +101,6 @@ export default function PreviewPanel({ url, error, isBuilding }) {
               </div>
             </div>
             
-            {/* URL Statistics */}
-            <div className="px-4 py-3 bg-white border-b border-gray-200">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div>
-                  <div className="text-lg font-semibold text-gray-900">
-                    {url.length}
-                  </div>
-                  <div className="text-xs text-gray-500">Characters</div>
-                </div>
-                <div>
-                  <div className="text-lg font-semibold text-gray-900">
-                    {(url.match(/&/g) || []).length + 1}
-                  </div>
-                  <div className="text-xs text-gray-500">Parameters</div>
-                </div>
-                <div>
-                  <div className="text-lg font-semibold text-gray-900">
-                    {(url.match(/(\$\{[^}]+\}|%%[^%]+%%|\{[^}]+\})/g) || []).length}
-                  </div>
-                  <div className="text-xs text-gray-500">Server Macros</div>
-                </div>
-                <div>
-                  <div className="text-lg font-semibold text-gray-900">
-                    {(url.match(/%[0-9A-F]{2}/g) || []).length}
-                  </div>
-                  <div className="text-xs text-gray-500">Reserved Chars</div>
-                </div>
-              </div>
-            </div>
 
             {/* Action Buttons */}
             <div className="p-4 bg-white space-y-3">

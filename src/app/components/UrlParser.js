@@ -8,7 +8,9 @@ import {
   ArrowRight,
   Info,
   Zap,
-  Cookie
+  Cookie,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { parseUrlQueryParams } from '../../lib/form-helpers.js';
 import { validateAndNormalizeUrl } from '../../lib/url-encoder.js';
@@ -19,6 +21,7 @@ export default function UrlParser({ onParseUrl, onParseParams, onParseCookiePara
   const [selectedCookieParamIndex, setSelectedCookieParamIndex] = useState(null);
   const [isParsing, setIsParsing] = useState(false);
   const [error, setError] = useState('');
+  const [showInfoBanner, setShowInfoBanner] = useState(false);
 
   const handleUrlChange = (e) => {
     const url = e.target.value;
@@ -150,7 +153,41 @@ export default function UrlParser({ onParseUrl, onParseParams, onParseCookiePara
             Paste a complete URL to extract the base URL and query parameters automatically.
           </p>
         </div>
+        <button
+          type="button"
+          onClick={() => setShowInfoBanner(!showInfoBanner)}
+          className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+          aria-label={showInfoBanner ? 'Hide parsing features info' : 'Show parsing features info'}
+        >
+          <Info className="h-4 w-4 mr-1" />
+          <span className="text-sm">Info</span>
+          {showInfoBanner ? (
+            <ChevronUp className="h-4 w-4 ml-1" />
+          ) : (
+            <ChevronDown className="h-4 w-4 ml-1" />
+          )}
+        </button>
       </div>
+
+      {showInfoBanner && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-start space-x-3">
+            <Info className="h-5 w-5 text-blue-500 mt-0.5" />
+            <div>
+              <h4 className="text-sm font-medium text-blue-900">URL Parsing Features</h4>
+              <div className="mt-2 text-sm text-blue-800">
+                <ul className="space-y-1">
+                  <li>• Automatically detects and validates URL format</li>
+                  <li>• Extracts base URL and separates query parameters</li>
+                  <li>• Identifies server-side macros (${"{MACRO}"}, %%MACRO%%, {"{MACRO}"})</li>
+                  <li>• Select cookie parameter and apply everything at once</li>
+                  <li>• Preserves parameter order and values exactly as provided</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="space-y-3">
         {/* URL Input */}
@@ -300,25 +337,6 @@ export default function UrlParser({ onParseUrl, onParseParams, onParseCookiePara
             </div>
           </div>
         )}
-
-        {/* Info Banner */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-start space-x-3">
-            <Info className="h-5 w-5 text-blue-500 mt-0.5" />
-            <div>
-              <h4 className="text-sm font-medium text-blue-900">URL Parsing Features</h4>
-              <div className="mt-2 text-sm text-blue-800">
-                <ul className="space-y-1">
-                  <li>• Automatically detects and validates URL format</li>
-                  <li>• Extracts base URL and separates query parameters</li>
-                  <li>• Identifies server-side macros (${"{MACRO}"}, %%MACRO%%, {"{MACRO}"})</li>
-                  <li>• Select cookie parameter and apply everything at once</li>
-                  <li>• Preserves parameter order and values exactly as provided</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

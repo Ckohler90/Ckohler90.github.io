@@ -1,5 +1,6 @@
 'use client';
 
+import {CircleCheckBig, Settings, Eye} from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -208,10 +209,8 @@ export default function RedirectForm() {
         {/* Step 0: URL Parser (Optional) */}
         <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">
-              ⚡
-            </div>
-            <h2 className="text-xl font-semibold text-gray-900">Quick Start - Parse URL & Select Cookie Parameter</h2>
+            <Eye className="w-8 h-8 text-purple-500" />
+            <h2 className="text-xl font-semibold text-gray-900">Parse URL & Select Cookie Parameter</h2>
           </div>
           
           <UrlParser
@@ -224,9 +223,7 @@ export default function RedirectForm() {
         {/* Step 3: Preview & Validation */}
         <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">
-              3
-            </div>
+            <CircleCheckBig className="w-8 h-8 text-green-500" />
             <h2 className="text-xl font-semibold text-gray-900">Preview & Validation</h2>
           </div>  
           <PreviewPanel
@@ -240,9 +237,7 @@ export default function RedirectForm() {
         <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">
-                2
-              </div>
+              <Settings className="w-8 h-8 text-blue-500" />
               <h2 className="text-xl font-semibold text-gray-900">Advanced Settings</h2>
               <span className="text-sm text-gray-500 font-normal">(Optional)</span>
             </div>
