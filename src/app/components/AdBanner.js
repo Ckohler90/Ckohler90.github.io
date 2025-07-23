@@ -21,6 +21,9 @@ export default function AdBanner({ ads = [], type, position }) {
         return position === 'top' 
           ? "w-full mb-4 flex justify-center flex-wrap gap-4" 
           : "w-full mt-4 flex justify-center flex-wrap gap-4";
+      case 'leaderboard':
+        return position === 'below-top' ? "w-full mb-6 flex justify-center" : "w-full mt-6 mb-4 flex justify-center";
+        
       case 'medium-rectangle':
         // 300x250 ads for top section sides
         return "flex justify-center items-center flex-wrap gap-4";
@@ -36,10 +39,16 @@ export default function AdBanner({ ads = [], type, position }) {
 
   const getAdStyles = () => {
     switch (type) {
+      case 'leaderboard':
+        return "w-[728px] h-[90px]";
       case 'medium-rectangle':
         return "w-[300px] h-[250px]";
       case 'sticky-footer':
         return "w-[728px] h-[90px]";
+      case 'banner':
+        return "w-[970px] h-[250px]";
+      case 'sidebar':
+        return "w-[300px] h-[600px]";
       default:
         return "";
     }
