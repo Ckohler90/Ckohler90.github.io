@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 
 export default function AdBanner({ ads = [], type, position }) {
-  const [selectedAd, setSelectedAd] = useState(null);
   const [isClient, setIsClient] = useState(false);
 
   // Set isClient to true after component mounts to avoid hydration mismatch
@@ -11,16 +10,8 @@ export default function AdBanner({ ads = [], type, position }) {
     setIsClient(true);
   }, []);
 
-  // Select random ad only after client-side hydration
-  useEffect(() => {
-    if (isClient && ads && ads.length > 0) {
-      const randomAd = ads[Math.floor(Math.random() * ads.length)];
-      setSelectedAd(randomAd);
-    }
-  }, [isClient, ads]);
-
   // Return nothing if no ads provided or not yet hydrated
-  if (!ads || ads.length === 0 || !isClient || !selectedAd) {
+  if (!ads || ads.length === 0 || !isClient) {
     return null;
   }
 
@@ -28,27 +19,36 @@ export default function AdBanner({ ads = [], type, position }) {
     switch (type) {
       case 'banner':
         return position === 'top' 
-          ? "w-full mb-4 flex justify-center" 
-          : "w-full mt-4 flex justify-center";
+          ? "w-full mb-4 flex justify-center flex-wrap gap-4" 
+          : "w-full mt-4 flex justify-center flex-wrap gap-4";
+      case 'leaderboard':
+        return position === 'below-top' ? "w-full mb-6 flex justify-center" : "w-full mt-6 mb-4 flex justify-center";
+        
       case 'medium-rectangle':
         // 300x250 ads for top section sides
-        return "w-[300px] h-[250px] flex justify-center items-center";
+        return "flex justify-center items-center flex-wrap gap-4";
       case 'sidebar':
-        return "w-64 mx-2";
+        return "w-64 mx-2 space-y-4";
       case 'sticky-footer':
-        // 300x600 sticky footer
-        return "fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[728px] h-[90px] z-40 bg-white border border-gray-300 shadow-lg";
+        // For sticky footer, we might want to display ads side by side
+        return "fixed bottom-0 left-1/2 transform -translate-x-1/2 z-40 bg-white border border-gray-300 shadow-lg flex gap-2 p-2";
       default:
-        return "flex justify-center";
+        return "flex justify-center flex-wrap gap-4";
     }
   };
 
   const getAdStyles = () => {
     switch (type) {
+      case 'leaderboard':
+        return "w-[728px] h-[90px]";
       case 'medium-rectangle':
         return "w-[300px] h-[250px]";
       case 'sticky-footer':
         return "w-[728px] h-[90px]";
+      case 'banner':
+        return "w-[970px] h-[250px]";
+      case 'sidebar':
+        return "w-[300px] h-[600px]";
       default:
         return "";
     }
@@ -56,12 +56,15 @@ export default function AdBanner({ ads = [], type, position }) {
 
   return (
     <div className={getContainerStyles()}>
-      {selectedAd.html && (
-        <div 
-          className={getAdStyles()}
-          dangerouslySetInnerHTML={{ __html: selectedAd.html }} 
-        />
-      )}
+      {ads.map((ad, index) => (
+        ad.html && (
+          <div 
+            key={index}
+            className={getAdStyles()}
+            dangerouslySetInnerHTML={{ __html: ad.html }} 
+          />
+        )
+      ))}
     </div>
   );
 } 
