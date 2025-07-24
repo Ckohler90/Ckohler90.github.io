@@ -3,10 +3,32 @@
 import { useState } from 'react';
 import RedirectForm from './components/RedirectForm.js';
 import AdBanner from './components/AdBanner.js';
-import { CircleOff, DollarSign} from 'lucide-react';
+import { CircleOff, DollarSign, X } from 'lucide-react';
 
 export default function Home() {
   const [showAds, setShowAds] = useState(true);  // set to true to show ads
+  const [showModal, setShowModal] = useState(false);
+
+  // Handle the showAds button click - show modal instead of directly toggling
+  const handleToggleAdsClick = () => {
+    if (showAds) {
+      setShowModal(true);
+    } else {
+      setShowAds(true);
+    }
+  };
+
+  // Handle modal accept - toggle ads off and close modal
+  const handleAccept = () => {
+    setShowAds(false);
+    setShowModal(false);
+  };
+
+  // Handle modal decline - show alert and close modal
+  const handleDecline = () => {
+    setShowModal(false);
+    alert("Cheapass");
+  };
 
   // Placeholder ad structure - you can replace this with your own creatives
   const sampleAds = {
@@ -28,17 +50,48 @@ export default function Home() {
   stickyFooter: [{ // 728x90
       html: `<!-- Sovrn Creative creativeId:"26200200_EAAYACogOkRlNgHlo7.Q-Hj.bGKxuh0SfYcQX-t8lWVO6i769doyBKq2BHs_" seatId:"200" dspId:"26" siteId:"754122" pubId:"260380" referrerDomain:"www.tuttocampo.it" deliveryType:"display"--><iframe id="amznad51756" src="https://aax-eu.amazon-adsystem.com/e/or/2fdf62ab27c1174e7ef53f260727f8be/creative?b=JBE-MQocgXuAXPNXFMBWa-sAAAGYMHTBHAMAAAeIAUEzcHhfdHhuX2JpZDEgICAzcHhfdHhuX2ltcDEgICCp4Rmc&bi=cfv1_CFioBQ4hjei7yQX3cOx9mintX15JSOQqzHdghVXCIgrOI9z1VpJE4LppnCpNmSmzwaknhvtAnXzOsDynMYURJT4DXuv_bLiLOE4sd2RhZwuIHapZ5hUuzzkBGQ6KSY-cOO3hABf7s8Vtcmshl0v2bUt--SNpf-9BWUNMWLEXVk2ixazTgmold2-lb4CRycdZajuIueuGqvCZp7iGyWLJlp10fW9cbDqrl_CxTzCFb6muTEOY_fhs1LmQbaotIjjebArBDsScmxdgz00GMp9PXzi5ZXqulBXiPOakzL71TJE1FQH9kvvcv0_LIFKdQIeugv1IpestEY_Szd6JBaToTJku37onAjRi8_5Ghk4Ac8A90FVfMmSP0imc9_1bJxGsHkVuiTzBnHhJ_W2xUurPAzkeAM2o0Nh7IfIVIlsp5kpRDeJIoRlXWGBs_5pnel0tVPOcaMf6tPOjTTVTCCiD3pcaXE_R2wGreS5lOIJi5sOlCGkaltn12BfGUUdbEIep0tV_zjoBNo5IpCCoz2yCyzFFPktIf18MNjebDaBFtrY9r-nLqLM2ZADyUg" width="728" height="90" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe><img src="https://ghent-gce-nl.bidswitch.net/imp/1.5607/BSWhttps_A_B_Baax-eu.amazon-adsystem.com_Be_Bor_B2fdf62ab27c1174e7ef53f260727f8be_Bimpb_Cb_RJBE-MQocgXuAXPNXFMBWa-sAAAGYMHTBHAMAAAeIAUEzcHhfdHhuX2JpZDEgICAzcHhfdHhuX2ltcDEgICCp4Rmc_Jw_R_I_WAUCTION__PRICE_AHMAC__SHA1_X_Jbi_RMTb-f4kSYx6w7eXbYW43PUSL2nyecSSaL.dQYM6qrrIVIduzQYinMMxOegEluAeK-xt9xy7N98VAW58w.tg8gSlq2u0WvYOrz9DhTsnnrdh.PfwrU6YxlcuKJv4xbwwS2TTGfXlzUAQbV8wbgqZnCXqbtsnmBg5f6PI0D6.QANzmV7MLzr0TO8mehrdmjLPhC2vszDSfl502liS9TyIVuAQjGz9HxUretLRsYad7FclGnbm6wJmhjcUX9kBRgzqj.ejB.NDDIMeqRIMM70vA39yJnvedTvQTeV6u6PTLYYmBeaHFBtJFkzcXX5cxXiC2l07PfoYT.r00lur0yhib3B6o6hKbGf.5nlQtiNkfeO15X4WLGkSxNFW1gWEYw6GIt1xohPndRsQzLxV00R2bkqY.4Ba7tNReo3x.m6w-I.IcPnQ5ReHx8fiScehACUcJGgccLg8tvep36pVskLH8FQBeY7tQIz3kcqH6OQkcKSm4rVPYJu18c2QNl7uee4.zTezwpfZAjRpHvRMpn7RWTlw2z-GHXYfU7-qsR-YiqKELURWjpqwc1dfbddCy0NKvQaenM2NVpylLS7kW3g8aJhYS1FQoGoTtd.V4fESivlvBiFSPbHI1QWS2MlJvYB6d6abY2fenDcahnVQi9A9Avrvg.g6AC9cqvBTao.UbOh3SHz-Z8fM2LbmbAxW3oWJyHAEhfScw3QFK36WgY4Af-Q____/4y7dLc_2xrzdFbHVb0iwRpoWJTDutLuAXjxFjBYcXh_zlmSSfXdyU0KIUzqHH9HmQgESsbJqc_iqUOWDjSCfCOctZWZltEo_eL0H7scMtmlWufgoap3PwPUjq7UvNi4M8bhafHd2D_ceqp-nECG_gRYyEgksn91gX0PJ00tHD6WTJy269o_yAPC0l09DVoW3PXV-8EtqwQ2AxrF_XV_lJnUZK5iP4D52w8KGcifo48AcrBJ6uUHDfBf4JrEFigmR5FosvqhRcQ4cAfQ7aazsqmj27AXxUe3a6qIi97Ni7u4yVJCwIbVCoxbfaYoGlncJMXignNxL3nnbgMJpwxB3dOdRu30y3PrzZj4MeU0JNuW-zdqJlW7mu7A0WAzk-5bAuqUqND-h_rrLinFS5bKyQ4LDDV-ijkj3afXQtTVrd1bzcDYSsi7HesWrcB_2s9mAvBHFn2QCrwcxfpLg3zojy1D5lovw2IR6VZs-ExAckS0an7RAfBZCy7ZorXT2pXSYpmQ4ogRh9vmoP9GNiGKrPWwQBvW2TG70Q7jhOo4Qk-IA5afqWDhguBuToNTh_VQS7QkgEReUg8nzDIL7z4r2hbxJlBypTTpf2qVD6gVh6jsehjwO0cjvZXFCMbJoRb8dZQoqyQu5tVAsb3M6J_xdyScTmyUK-6G-SG1WkE4XRJ-U7nLmxRkoaP_R4hJft-XassAxi8Zp9KelQ9HdCTx21-zdmGyMXXjhdlpPz2vWb2R1yocG3HajT2PUa_eG72hB22USeXMVIr-G-9YmyrUT-ZPlsjiTUW2HHbk6dUz_LBNIemjYiMhypzvITkiTrksRgzwhoSot6WMcKXEEeH-rFyf8eZqUXMyMCPbI0AL5729RclSpxtjjMw5xEGT68VzCpAGhe63R5zjot7fwN1cYusihZ3ELtyorvG-W_cYBgxVnEsRPWh1WY01jthoelxmVf5kwCgnB4pauPMagkrmt_CcrQEBof4B6dEER8RSv8dxs5_N6SH9QtUxrf0PU9lQB5S2RogrgP6tg9VeOGCJMj6O2v9xDg6pfZ1Z4P5Rg843O6pSqroQD6BnXIfik6w31b4ktDiZLN5qzm-tJRZuMzxF_YiX3oy7TVeeOFwQh-dEXtd0gMIzDgqqiDB8PUXX7Y_vh0S22wG6C7eSX3vFWTMLE0XghtRNvmWFVp9Kc7JyS8ewXFQULUE8_xk9OR6Tu2SwuKsUOiNTI5h0Do6OaQMukarEmZh2I5OTmHjfVQlVflO_eJvln4eio5XNZWL7CaBNkojaGc2u7AQv6zsPLdbqOBTgsWMx3d72SFtliBv1h0ZKlDgRAPqPkMrtBt-p1ItnS64xQn4hF4QZh8kDOTzsOsBHF891N3XxHcbmovsti_0fyaz9HVh1uHAthSMSoh5PbS3B6drYAIP9UgSgA_NkzQ3Tyl5iu2qIDO1DvGWrH4AyRzJeb24bnMmm00kPoOZFsMjEWvosv2pfTpSJNOhw5ry8Yl3q_2xHGjz5gkwWFTTQYzUunPzg56VZA4NTlPskhYS6FJ6zfr7a2gTTCevTkLNPANneQfaycoGUGOxYUdwJkGsRsllIsMCKk-7ZNHQQGvRkBbCyzEMp_2Y8jVpt3mu5NsTCT67NfGc__MB0SyS1vpscj6MF0F-R3eZta0OouMnUU2QfM7w3Lkz5uVVN8eFo6_1NVn3mmZN2h85-DYiqHKuS68ykle1dcBUQ2r4qd3qgV5VG21pJf2lYd6P0XyfyYkPDV3s_GtxwEunzOVlOkYCXn4JFp68e49_ZArI5rHAg2NmkXnLg6hiTB5CqpXWuh2Wf-QMz1SmnuQOo3zA-5LvEwwAqbZ4YsEtH000B3JbQLmcwkLyToYqJdINivQ67WVF-EnL0NvAjSt0aT6g6E54XgsHLAZJNaxegLUHJgoV7ructhXdIDB0S1JMJjC5-m4zZa33uE8sd3-Ial91iVS_qgiCnX7XXOgvS8pGl2qFK5df5uAuA_icsvdq3yo2DuNLQaNue3cUKENY1xbU5aCERd2XOBHmrZopZJueg5j2gm1RWu6YzdxG2Z4PfjjXa2V3rwmE5ZPr8ml9Hlh752euCnjWomZw7zUKR5FCR0VHQXYqQ/" alt=" " style="display:none"/><script src="https://pxdrop.lijit.com/1/d/t.dhj?dmn=tuttocampo.it&pn=%2F&ipaddr=101.56.115.101&pubid=appmonet&v0=260380&GDPR_v2=CQTxRQAQTxRQAA_AFAITBxFsAP_gAEPgAAAAJqtD_G_fbWFq8Tr3afpkeYgHx9hjasQhBgaJEWQFyDqS_JwShmAwJASApqICmRAAOzRBIQFkHBDQRVAgQIABpQDMYEAEgDAIJiAggFIRA0JICARPGYlDGAAY5Pp8MhUxmBst7JLs3MzAg4gHlTQpA2QhAICRAYQNAPlgQAKC8xAMVmxUuwlQ8ELoAGOOQBG_gGlpoB8uYkMpRB0V4JqtB_G_dbXFu8DhXYfpkOYgXx9gDasQhBAaJIWQFyDqS9IwSlmAyJACAIKIAGRAAIzRBIAEoEBhARFAgQIABJQDMAEAAgDAIIGAggDIRQEBAAABPCYlDGAAZ5Op-MBV5iQks5JLm3EyAAZgjtTApA2QBAIiQCYAFEOlgQAAA4jAcVkRC0glA8MLoAAKCABG_kGhholYO4sHJRhoRYAA.f_wAD_wAAAAA" async="true" defer="true" id="pxscrpt"></script>`
   }]
+    
   };
 
   return (
     <main className="min-h-screen bg-gray-50 py-8 relative pb-24">
       {/* Toggle Button - Fixed position */}
       <button
-        onClick={() => setShowAds(!showAds)}
-        className="fixed top-4 right-4 z-50 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-bold shadow-lg transition-colors"
+        onClick={handleToggleAdsClick}
+        className="fixed top-4 right-4 z-50 hover:bg-red-700 text-black px-4 py-2 rounded-lg font-bold shadow-lg transition-colors"
       >
         {showAds ? <CircleOff /> : <DollarSign />}
       </button>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 max-w-md mx-4 relative">
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            >
+              <X size={24} />
+            </button>
+            <h2 className="text-xl font-bold mb-4 text-center">Ad-Free Experience</h2>
+            <p className="text-center mb-6">For an ad-free experience, pay Corey $10</p>
+            <div className="flex gap-4 justify-center">
+              <button
+                onClick={handleAccept}
+                className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+              >
+                Accept
+              </button>
+              <button
+                onClick={handleDecline}
+                className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+              >
+                Decline
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Content with conditional ad layout */}
       {showAds ? (
